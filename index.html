@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="chart_canva" width="800" height="400"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    <script type="module">
+        import data from './js/data.js'
+        
+        function totalCasesCharts(ctx) {
+            const {
+                NumeroGolpes
+            } = data
+           const chart = new Chart(ctx, {
+               type: "line",
+               data: {
+                   labels: NumeroGolpes.map(item => item.num),
+                   datasets: [
+                       {
+                       label: "Numero de golpes acumulados",
+                       borderColor: "green",
+                       data: NumeroGolpes.map(item => item.penetracion),
+                       }
+                   ]
+               },
+               
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                    reverse: true,
+                                beginAtZero:true
+                            }
+                        }],
+                        /*xAxes: [{
+                                ticks: {
+                                reverse: true,
+                            beginAtZero: true
+                            }
+                        }]*/
+                    }
+                }
+    
+           })
+        }
+        
+        function rendersCharst() {
+            const ctx = document.querySelector("#chart_canva").getContext("2d")
+            totalCasesCharts(ctx)
+            
+        }
+
+        rendersCharst()
+
+    </script>
+    <h1>Graficas</h1>
+</body>
+</html>
