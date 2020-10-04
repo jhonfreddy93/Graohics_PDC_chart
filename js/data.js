@@ -79,3 +79,23 @@ export default {
     
   ]
 }
+
+
+var dataSet = [
+  [ 0, 0 ],
+  [ 1, 1 ],
+  [ 2, 2 ],
+  [ 3, 3 ]
+  
+];
+
+$(document).ready(function() {
+  $('#example').DataTable( {
+      data: dataSet,
+      columns: [
+          { title: "Name" },
+          { title: "Position" }
+          
+      ]
+  } );
+} );
