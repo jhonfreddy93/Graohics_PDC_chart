@@ -22,10 +22,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Estado</th>
+                        <th scope="col">Num</th>
+                        <th scope="col">Num2</th>
+                        
                     </tr>
                 </thead>
                 <tbody id="contenido">
@@ -72,7 +71,25 @@ var config = {
          data: data2,
          backgroundColor: 'rgba(0, 119, 204, 0.3)'
       }]
-   }
+   },
+
+   options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                    reverse: true,
+                                    beginAtZero:true
+                            }
+                        }],
+                        xAxes: [{
+                                ticks: {
+                                reverse: true,
+                            beginAtZero: true
+                            }
+                        }]
+                   }
+
+                }
 };
 
 var chart = new Chart(ctx, config);
@@ -81,38 +98,7 @@ var chart = new Chart(ctx, config);
 
         
 
-                /*options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                    reverse: true,
-                                    beginAtZero:true
-                            }
-                        }],
-                        /*xAxes: [{
-                                ticks: {
-                                reverse: true,
-                            beginAtZero: true
-                            }
-                        }]*/
-                   // }
-
-             
-               // },
                 
-               
-                      
-    
-        
-    
-        
-      /*  function rendersCharst() {
-            const ctx = document.querySelector("#chart_canva").getContext("2d")
-            totalCasesCharts(ctx)
-            
-        }
-
-        rendersCharst()*/
 
 
 
