@@ -26,8 +26,8 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Num</th>
-                        <th scope="col">Num2</th>
+                        <th scope="col">Golpes acumulados</th>
+                        <th scope="col">Penetracion acumulada</th>
                         
                     </tr>
                 </thead>
@@ -40,6 +40,7 @@
             <input type="button" name="OK" class="ok" value="OK"/>
         </div>
     </div>
+    <div id="count"></div>
 
 
 
@@ -58,11 +59,11 @@
             var data2 = [];
             // will generate array with ['Monday', 'Tuesday', 'Wednesday']
             var labels2 = json.map(function(item) {
-                return item.NUM;
+                return item.GolpeAcumulado;
             });    
 
             var data2 = json.map(function(item) {
-                return item.NUM2;
+                return item.PenetracionAcumulada;
             });    
 
             console.log(labels2)
@@ -75,7 +76,7 @@
                     data: {
                     labels: labels2,
                     datasets: [{
-                    label: 'Graph Line',
+                    label: 'PDC',
                     data: data2,
                     backgroundColor: 'rgba(0, 119, 204, 0.3)'
                     }]
@@ -89,12 +90,12 @@
                                                 beginAtZero:true
                                         }
                                     }],
-                                    xAxes: [{
+                                   /* xAxes: [{
                                             ticks: {
                                             reverse: true,
                                         beginAtZero: true
                                         }
-                                    }]
+                                    }]*/
                             }
 
                             }
@@ -131,31 +132,83 @@
                 contenido.innerHTML += `
                 
                 <tr>
-                    <td>${ valor.NUM }</td>
-                    <td>${ valor.NUM2 }</td>
+                    <td>${ valor.GolpeAcumulado }</td>
+                    <td>${ valor.PenetracionAcumulada }</td>
                 
                 </tr>
                 
                 `
             } 
+
+           
             
             $("#contenido tr").click(function(){
-            $(this).toggleClass('selected');  
-            
-            var value3=$(this).find('td:first').html();
-            
-            
-            alert(value3);    
-        });
-
-   
-        $('.ok').on('click', function(e){
-            var selected = [];
-            $("#contenido tr.selected").each(function(){
-                selected.push($('td:first', this).html());
+                $(this).toggleClass('selected');  
+                
+                var value3=$(this).find('td:first').html();
+                
+                
+                //alert(value3);    
             });
-            alert(selected);
-        });
+
+   var contador =0;
+   var contadorFilas=0;
+   var contadorColumnas=1;
+            $('.ok').on('click', function(e){
+                var selected = [];
+                var selected2 =[];
+                $("#contenido tr.selected").each(function(){
+                    selected.push($('td:nth-child(1)', this).html());
+                    selected2.push($('td:nth-child(2)', this).html());
+                });
+                alert("Golpe acumulado: "+selected+"\n Penetracion Acumulada: "+selected2);
+                
+                /*contenido.innerHTML += `
+                
+                <tr>
+                    <td>${ selected[1] }</td>
+                    <td>${ selected2[1] }</td>
+                
+                </tr>
+                
+                `*/
+                var div1 = document.getElementById("contenido")
+                for (let value of selected) {
+                    var row = div1.getElementsByTagName("tr")[contadorFilas];
+                    //var row2 = div1.getElementsByTagName("tr")[contadorFilas+1];
+                    
+                        var x = row.insertCell(2);
+                    // var x2 = row.insertCell(3);
+
+                        //var x3 = row2.insertCell(2);
+                        //var x4 = row2.insertCell(3);
+                        //var elementid = document.getElementsByTagName("td").length
+                            x.setAttribute('class',3);
+                        // x2.setAttribute('class',elementid+1);
+                            //x3.setAttribute('class',elementid);
+                            //x4.setAttribute('class',elementid+1);
+
+                            var nColumnas = document.getElementsByClassName(3).length;
+
+                            
+                                
+                                x.innerHTML += value;
+                                    
+                        
+                            //selected.forEach(element => x.innerHTML=element);
+                            //selected.forEach(element => console.log(element));
+                            //console.log(selected[1]);
+                            //x.innerHTML=selected[1];
+                            //x2.innerHTML=selected2[1];
+                            //x3.innerHTML=selected[1];
+                            //x4.innerHTML=selected2[1];
+                        contador = contador+1;
+                        contadorFilas = contadorFilas+1
+                        //$("#count").val(nColumnas);
+                        alert(" Contador "+ contador+ " numero columnas id 3 "+nColumnas);
+                    }
+                
+            });
 
         };
 

@@ -1,24 +1,88 @@
 [
     {
-        "NUM": 1,
-        "NUM2": 11
+        "GolpeAcumulado": 0,
+        "PenetracionAcumulada": 0
         
     },
     {
-        "NUM": 2,
-        "NUM2": 22
+        "GolpeAcumulado": 3,
+        "PenetracionAcumulada": 10.65
+        
     },
     {
-        "NUM": 3,
-        "NUM2": 33
+        "GolpeAcumulado": 8,
+        "PenetracionAcumulada": 57.5
+        
     },
     {
-        "NUM": 4,
-        "NUM2": 44
+        "GolpeAcumulado": 13,
+        "PenetracionAcumulada": 81
+        
     },
-    
     {
-        "NUM": 5,
-        "NUM2": 55
+        "GolpeAcumulado": 18,
+        "PenetracionAcumulada": 97.5
+        
+    },
+    {
+        "GolpeAcumulado": 23,
+        "PenetracionAcumulada": 112
+        
+    },
+    {
+        "GolpeAcumulado": 28,
+        "PenetracionAcumulada": 125
+        
+    },
+    {
+        "GolpeAcumulado": 33,
+        "PenetracionAcumulada": 135
+        
+    },
+    {
+        "GolpeAcumulado": 43,
+        "PenetracionAcumulada": 166
+        
+    },
+    {
+        "GolpeAcumulado": 53,
+        "PenetracionAcumulada": 207
+        
+    },
+    {
+        "GolpeAcumulado": 63,
+        "PenetracionAcumulada": 261
+        
+    },
+    {
+        "GolpeAcumulado": 73,
+        "PenetracionAcumulada": 334
+        
+    },
+    {
+        "GolpeAcumulado": 83,
+        "PenetracionAcumulada": 445
+        
+    },
+    {
+        "GolpeAcumulado": 88,
+        "PenetracionAcumulada": 525
+        
+    },
+    {
+        "GolpeAcumulado": 93,
+        "PenetracionAcumulada": 713
+        
+    },
+    {
+        "GolpeAcumulado": 98,
+        "PenetracionAcumulada": 859
+        
+    },
+    {
+        "GolpeAcumulado": 101,
+        "PenetracionAcumulada": 929
+        
     }
+
 ]
