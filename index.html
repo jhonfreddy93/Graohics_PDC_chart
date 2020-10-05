@@ -6,7 +6,11 @@
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
     crossorigin="anonymous">
-
+    <link rel="stylesheet" href="./styles/estilo.css">
+    <script
+  src="https://code.jquery.com/jquery-1.8.3.min.js"
+  integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8="
+  crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -17,7 +21,7 @@
 
 
     <div class="container my-5 text-center">
-        <button class="btn btn-danger w-100" onclick="traer()">Obtener</button>
+        <!--<button class="btn btn-danger w-100" onclick="traer()">Obtener</button>-->
         <div class="mt-5">
             <table class="table">
                 <thead>
@@ -28,16 +32,19 @@
                     </tr>
                 </thead>
                 <tbody id="contenido">
-                    
+                    <tr>
+                        <td>2</td>
+                    </tr>
                 </tbody>
             </table>
+            <input type="button" name="OK" class="ok" value="OK"/>
         </div>
     </div>
 
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
-    <script src="./js/data.js"></script>
+    
     <script src="./tabla.json"></script>
 
 
@@ -62,79 +69,99 @@
             console.log(data2)
 
             var ctx = canvas.getContext('2d');
-var config = {
-   type: 'line',
-   data: {
-      labels: labels2,
-      datasets: [{
-         label: 'Graph Line',
-         data: data2,
-         backgroundColor: 'rgba(0, 119, 204, 0.3)'
-      }]
-   },
 
-   options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                    reverse: true,
-                                    beginAtZero:true
+            var config = {
+                    type: 'line',
+                    data: {
+                    labels: labels2,
+                    datasets: [{
+                    label: 'Graph Line',
+                    data: data2,
+                    backgroundColor: 'rgba(0, 119, 204, 0.3)'
+                    }]
+                    },
+
+                    options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                                reverse: true,
+                                                beginAtZero:true
+                                        }
+                                    }],
+                                    xAxes: [{
+                                            ticks: {
+                                            reverse: true,
+                                        beginAtZero: true
+                                        }
+                                    }]
                             }
-                        }],
-                        xAxes: [{
-                                ticks: {
-                                reverse: true,
-                            beginAtZero: true
+
                             }
-                        }]
-                   }
+            };
 
-                }
-};
-
-var chart = new Chart(ctx, config);
-            });
+            var chart = new Chart(ctx, config);
+        });
 
 
         
 
                 
-
-
+           
 
         var contenido = document.querySelector('#contenido');
 
-function traer() {
-    fetch('./tabla.json')
-        .then(res => res.json())
-        .then(datos => {
-         //console.log(datos)
-            tabla(datos)
-        })
-};
+        function traer() {
+            fetch('./tabla.json')
+            .then(res => res.json())
+            .then(datos => {
+            //console.log(datos)
+                tabla(datos)
+            })
+        };
 
 
+        traer();
 
+        function tabla(datos) {
+            // console.log(datos)
+            contenido.innerHTML = ''
+            for(let valor of datos){
+                // console.log(valor.nombre)
+                contenido.innerHTML += `
+                
+                <tr>
+                    <td>${ valor.NUM }</td>
+                    <td>${ valor.NUM2 }</td>
+                
+                </tr>
+                
+                `
+            } 
+            
+            $("#contenido tr").click(function(){
+            $(this).toggleClass('selected');  
+            
+            var value3=$(this).find('td:first').html();
+            
+            
+            alert(value3);    
+        });
 
+   
+        $('.ok').on('click', function(e){
+            var selected = [];
+            $("#contenido tr.selected").each(function(){
+                selected.push($('td:first', this).html());
+            });
+            alert(selected);
+        });
 
+        };
 
-
-function tabla(datos) {
-    // console.log(datos)
-    contenido.innerHTML = ''
-    for(let valor of datos){
-        // console.log(valor.nombre)
-        contenido.innerHTML += `
+       
         
-        <tr>
-            <th scope="row">${ valor.NUM }</th>
-            <td>${ valor.NUM2 }</td>
-        
-        </tr>
-        
-        `
-    }
-}
+
     </script>
     
 </body>
