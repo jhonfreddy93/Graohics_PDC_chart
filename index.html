@@ -151,8 +151,8 @@
                 //alert(value3);    
             });
 
-   var contador =0;
-   var contadorFilas=0;
+   var contador =1;
+   var contadorFilas=1;
    var contadorColumnas=1;
             $('.ok').on('click', function(e){
                 var selected = [];
@@ -173,7 +173,12 @@
                 
                 `*/
                 var div1 = document.getElementById("contenido")
-                for (let value of selected) {
+                //for (let value of selected) {
+
+                    for (let i = 0; i < selected2.length; i++) {
+                            //console.log(selected[i])
+                            PenetracionLecturas = selected2[i+1]-selected2[i]
+                                if (!isNaN(PenetracionLecturas)) {
                     var row = div1.getElementsByTagName("tr")[contadorFilas];
                     //var row2 = div1.getElementsByTagName("tr")[contadorFilas+1];
                     
@@ -192,7 +197,12 @@
 
                             
                                 
-                                x.innerHTML += value;
+                                    x.innerHTML += PenetracionLecturas;
+                                    contador = contador+1;
+                                    contadorFilas = contadorFilas+1
+                                
+                                
+                                
                                     
                         
                             //selected.forEach(element => x.innerHTML=element);
@@ -202,12 +212,12 @@
                             //x2.innerHTML=selected2[1];
                             //x3.innerHTML=selected[1];
                             //x4.innerHTML=selected2[1];
-                        contador = contador+1;
-                        contadorFilas = contadorFilas+1
+                        
                         //$("#count").val(nColumnas);
                         alert(" Contador "+ contador+ " numero columnas id 3 "+nColumnas);
-                    }
-                
+                   // }
+                            }
+                }
             });
 
         };
