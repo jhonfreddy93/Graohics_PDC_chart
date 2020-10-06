@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles/estilo.css">
-    <script
-  src="https://code.jquery.com/jquery-1.8.3.min.js"
-  integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8="
-  crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.8.3.min.js" integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    <script src="./tabla.json"></script>
+
     <title>Document</title>
 </head>
 <body>
@@ -40,65 +39,57 @@
             <input type="button" name="OK" class="ok" value="OK"/>
         </div>
     </div>
-    <div id="count"></div>
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
     
-    <script src="./tabla.json"></script>
-
-
-
 
     <script >
         
+        //traer datos de tabla.json 
         $.getJSON("./tabla.json", function (json) {
 
-            var labels2 = [];
-            var data2 = [];
-            // will generate array with ['Monday', 'Tuesday', 'Wednesday']
-            var labels2 = json.map(function(item) {
+            var labelGolpeAcumulado = [];
+            var dataPenetracionAcumulada = [];
+            var labelGolpeAcumulado = json.map(function(item) {
                 return item.GolpeAcumulado;
             });    
 
-            var data2 = json.map(function(item) {
+            var dataPenetracionAcumulada = json.map(function(item) {
                 return item.PenetracionAcumulada;
             });    
 
-            console.log(labels2)
-            console.log(data2)
+            console.log(labelGolpeAcumulado)
+            console.log(dataPenetracionAcumulada)
 
+
+        //graficar con los datos de tabla.json utilizando chart.js
             var ctx = canvas.getContext('2d');
-
             var config = {
                     type: 'line',
                     data: {
-                    labels: labels2,
+                    labels: labelGolpeAcumulado,
                     datasets: [{
                     label: 'PDC',
-                    data: data2,
+                    data: dataPenetracionAcumulada,
                     backgroundColor: 'rgba(0, 119, 204, 0.3)'
                     }]
                     },
 
                     options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                                reverse: true,
-                                                beginAtZero:true
-                                        }
-                                    }],
-                                   /* xAxes: [{
-                                            ticks: {
-                                            reverse: true,
-                                        beginAtZero: true
-                                        }
-                                    }]*/
-                            }
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    reverse: true,
+                                    beginAtZero:true
+                                 }
+                            }],
+                         /* xAxes: [{
+                                ticks: {
+                                    reverse: true,
+                                     beginAtZero: true
+                                }
+                            }]*/
+                        }
 
-                            }
+                    }
             };
 
             var chart = new Chart(ctx, config);
@@ -109,51 +100,42 @@
 
                 
            
-
+        //crear la tabla de datos con json
         var contenido = document.querySelector('#contenido');
-
+        traer();
         function traer() {
             fetch('./tabla.json')
             .then(res => res.json())
             .then(datos => {
-            //console.log(datos)
+                console.log(datos)
                 tabla(datos)
             })
         };
-
-
-        traer();
-
         function tabla(datos) {
             // console.log(datos)
             contenido.innerHTML = ''
             for(let valor of datos){
                 // console.log(valor.nombre)
-                contenido.innerHTML += `
-                
+                contenido.innerHTML += `             
                 <tr>
                     <td>${ valor.GolpeAcumulado }</td>
                     <td>${ valor.PenetracionAcumulada }</td>
                 
-                </tr>
-                
+                </tr>  
                 `
-            } 
+            }; 
 
            
-            
+            //funcion de dar click sobre la tabla y seleccionar
             $("#contenido tr").click(function(){
                 $(this).toggleClass('selected');  
-                
-                var value3=$(this).find('td:first').html();
-                
-                
-                //alert(value3);    
+                    var value3=$(this).find('td:first').html();
+                    //alert(value3);    
             });
 
-   var contador =1;
-   var contadorFilas=1;
-   var contadorColumnas=1;
+            var contador =1;
+            var contadorFilas=1;
+            var contadorColumnas=1;
             $('.ok').on('click', function(e){
                 var selected = [];
                 var selected2 =[];
@@ -161,70 +143,31 @@
                     selected.push($('td:nth-child(1)', this).html());
                     selected2.push($('td:nth-child(2)', this).html());
                 });
-                alert("Golpe acumulado: "+selected+"\n Penetracion Acumulada: "+selected2);
+                //alert("Golpe acumulado: "+selected+"\n Penetracion Acumulada: "+selected2);
                 
-                /*contenido.innerHTML += `
-                
-                <tr>
-                    <td>${ selected[1] }</td>
-                    <td>${ selected2[1] }</td>
-                
-                </tr>
-                
-                `*/
                 var div1 = document.getElementById("contenido")
-                //for (let value of selected) {
-
+                    //adicionar nuevos datos en la columna 2 insertCell(2)
                     for (let i = 0; i < selected2.length; i++) {
-                            //console.log(selected[i])
-                            PenetracionLecturas = selected2[i+1]-selected2[i]
-                                if (!isNaN(PenetracionLecturas)) {
-                    var row = div1.getElementsByTagName("tr")[contadorFilas];
-                    //var row2 = div1.getElementsByTagName("tr")[contadorFilas+1];
-                    
-                        var x = row.insertCell(2);
-                    // var x2 = row.insertCell(3);
+                        PenetracionLecturas = selected2[i+1]-selected2[i]
+                            if (!isNaN(PenetracionLecturas)) {
+                                var row = div1.getElementsByTagName("tr")[contadorFilas];
+                                var x = row.insertCell(2);
 
-                        //var x3 = row2.insertCell(2);
-                        //var x4 = row2.insertCell(3);
-                        //var elementid = document.getElementsByTagName("td").length
-                            x.setAttribute('class',3);
-                        // x2.setAttribute('class',elementid+1);
-                            //x3.setAttribute('class',elementid);
-                            //x4.setAttribute('class',elementid+1);
+                                x.setAttribute('class',3);
 
-                            var nColumnas = document.getElementsByClassName(3).length;
 
-                            
-                                
+                                var nColumnas = document.getElementsByClassName(3).length;
                                     x.innerHTML += PenetracionLecturas;
                                     contador = contador+1;
                                     contadorFilas = contadorFilas+1
-                                
-                                
-                                
-                                    
-                        
-                            //selected.forEach(element => x.innerHTML=element);
-                            //selected.forEach(element => console.log(element));
-                            //console.log(selected[1]);
-                            //x.innerHTML=selected[1];
-                            //x2.innerHTML=selected2[1];
-                            //x3.innerHTML=selected[1];
-                            //x4.innerHTML=selected2[1];
-                        
-                        //$("#count").val(nColumnas);
-                        alert(" Contador "+ contador+ " numero columnas id 3 "+nColumnas);
-                   // }
+              
+                                //alert(" Contador "+ contador+ " numero columnas id 3 "+nColumnas);
+
                             }
-                }
+                    }
             });
 
         };
-
-       
-        
-
     </script>
     
 </body>
