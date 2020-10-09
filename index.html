@@ -55,7 +55,7 @@
                 </thead>
                 <tbody id="contenido">
                     <tr>
-                        <td>2</td>
+                        
                     </tr>
                 </tbody>
             </table>
@@ -67,7 +67,7 @@
     <script>
 
         
-           
+
                 let selectedFile;
                 console.log(window.XLSX);
                 document.getElementById('input').addEventListener("change", (event) => {
@@ -93,24 +93,30 @@
                         console.log(workbook);
                         workbook.SheetNames.forEach(sheet => {
                             let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-                                        //Path where your json file will be saved  
-                                //System.IO.File.WriteAllText("user.json", JSON.stringify(rowObject,undefined,4));  
                                 
-                            console.log(rowObject);
-                            //document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
-                            //console.log(JSON.stringify(rowObject));
+                                 ObjectList.push(rowObject)
 
-                            //let jsonfile = [   JSON.stringify(rowObject)      ];
-                            //console.log(" jsonfile "+JSON.stringify(rowObject));
+                                 Grafica(rowObject);
+                                 tabla(rowObject);
 
-                                
+                            console.log("Lista 1 "+rowObject);
+                            
+                        });
+                        }
+                    };
+
+                    
+                });
+        
+
+            function Grafica(list){
                             var labelGolpeAcumulado = [];
                             var dataPenetracionAcumulada = [];
-                            var labelGolpeAcumulado = rowObject.map(function(item) {
+                            var labelGolpeAcumulado = list.map(function(item) {
                                 return item.Numerodegolpesacumulado;
                             });    
 
-                            var dataPenetracionAcumulada = rowObject.map(function(item) {
+                            var dataPenetracionAcumulada = list.map(function(item) {
                                 return item.Penetracionacumulada;
                             });    
 
@@ -150,39 +156,10 @@
                                         }
                                 };
 
-                                var chart = new Chart(ctx, config);
-                            
-                            
-                        });
-                        }
-                    };
-
-                    
-                });
-        
-        
-        //traer datos de tabla.json 
-       // $.getJSON("./tabla.json", function (json) {
-
-           
-        //});
-
-
-        
-
+                                var chart = new Chart(ctx, config); 
+            };
                 
-           
-        //crear la tabla de datos con json
-        var contenido = document.querySelector('#contenido');
-        traer();
-        function traer() {
-            fetch('./tabla.json')
-            .then(res => res.json())
-            .then(datos => {
-                console.log(" datos "+datos)
-                tabla(datos)
-            })
-        };
+
         function tabla(datos) {
             // console.log(datos)
             contenido.innerHTML = ''
@@ -190,12 +167,12 @@
                 // console.log(valor.nombre)
                 contenido.innerHTML += `             
                 <tr>
-                    <td>${ valor.GolpeAcumulado }</td>
-                    <td>${ valor.PenetracionAcumulada }</td>
+                    <td>${ valor.Numerodegolpesacumulado }</td>
+                    <td>${ valor.Penetracionacumulada }</td>
                 
                 </tr>  
                 `
-            }; 
+        }; 
 
            
             //funcion de dar click sobre la tabla y seleccionar
