@@ -16,6 +16,8 @@
     <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    
+    <script src="https://www.lactame.com/lib/ml/3.3.0/ml.min.js"></script>
     <script src="./tabla.json"></script>
 
     <title>Document</title>
@@ -41,7 +43,7 @@
 
     <canvas id="canvas"></canvas>
 
-
+<div id="ContentPDC">
     <div class="container my-5 text-center">
         <!--<button class="btn btn-danger w-100" onclick="traer()">Obtener</button>-->
         <div class="mt-5">
@@ -59,9 +61,10 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="button" name="OK" class="ok" value="OK"/>
+            <input type="button" name="OK" class="ok" value="SELECCIONAR"/>
         </div>
     </div>
+</div>
     
 
     <script>
@@ -72,7 +75,7 @@
                 console.log(window.XLSX);
                 document.getElementById('input').addEventListener("change", (event) => {
                     selectedFile = event.target.files[0];
-                    alert("Metodo convertExcel");
+                    //alert("Metodo convertExcel");
                 })
 
                 let data=[{
@@ -94,13 +97,11 @@
                         workbook.SheetNames.forEach(sheet => {
                             let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                                 
-                                 ObjectList.push(rowObject)
-
                                  Grafica(rowObject);
                                  tabla(rowObject);
 
-                            console.log("Lista 1 "+rowObject);
-                            
+                                console.log("Lista 1 "+rowObject);
+                                //document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
                         });
                         }
                     };
@@ -110,6 +111,7 @@
         
 
             function Grafica(list){
+                document.getElementById('ContentPDC').style.display = 'block';
                             var labelGolpeAcumulado = [];
                             var dataPenetracionAcumulada = [];
                             var labelGolpeAcumulado = list.map(function(item) {
@@ -179,41 +181,109 @@
             $("#contenido tr").click(function(){
                 $(this).toggleClass('selected');  
                     var value3=$(this).find('td:first').html();
-                    //alert(value3);    
+                    var value4 = $(this).closest("tr").index()
+                    
             });
 
-            var contador =1;
-            var contadorFilas=1;
-            var contadorColumnas=1;
+           
+             
+            var contadorFilas=0;
+            var contadorFilas2=0;
+            var Numerodegolpescuadrado =0;
+            var MultiGolpespenetracion =0;
+            var SumaGolpespenetracion =0;
+            var SumaPentracionacumulada =0;
+            var caudradoSumaGolpespenetracion =0;
+
+            const xLineal = [];
+            const yLineal = [];
+
+            var ultimoFila=0;
+                    
             $('.ok').on('click', function(e){
-                var selected = [];
-                var selected2 =[];
+                var ValorNumerodegolpes = [];
+                var ValorPenetracionacumulada =[];
                 $("#contenido tr.selected").each(function(){
-                    selected.push($('td:nth-child(1)', this).html());
-                    selected2.push($('td:nth-child(2)', this).html());
+                    //Agregar valores a las matricez
+                    ValorNumerodegolpes.push($('td:nth-child(1)', this).html());
+                    
+                    ValorPenetracionacumulada.push($('td:nth-child(2)', this).html());
+                    
                 });
-                //alert("Golpe acumulado: "+selected+"\n Penetracion Acumulada: "+selected2);
                 
-                var div1 = document.getElementById("contenido")
-                    //adicionar nuevos datos en la columna 2 insertCell(2)
-                    for (let i = 0; i < selected2.length; i++) {
-                        PenetracionLecturas = selected2[i+1]-selected2[i]
+                
+                var Numerodetr = document.getElementById("contenido")
+                               
+                var UltimoPendienteTotal=0;
+                
+                var Numerodearchivos = ValorPenetracionacumulada.length;
+                
+
+                //metodo para recorrer matriz practicar
+                    function logArrayElements(element, index, array) {
+                        var resat = ValorPenetracionacumulada[(index)]-+ValorPenetracionacumulada[(index+1)]
+                            
+                        };
+                    ValorNumerodegolpes.forEach(logArrayElements);
+
+                  ultimoFila= (ValorPenetracionacumulada.length-1)+ultimoFila;
+                    
+                  var row = Numerodetr.getElementsByTagName("tr");
+                  
+
+
+
+                    for (let i = 0; i < ValorPenetracionacumulada.length; i++) {
+                        xLineal.push(ValorNumerodegolpes[i]);
+                       
+                        yLineal.push(ValorPenetracionacumulada[i]);
+
+                        PenetracionLecturas = parseFloat(ValorPenetracionacumulada[i+1])-parseFloat(ValorPenetracionacumulada[i])
+                        
+                        Numerodegolpescuadrado = parseFloat(Math.pow(ValorNumerodegolpes[i], 2)) + parseFloat(Numerodegolpescuadrado);
+                        
+                        MultiGolpespenetracion = parseFloat((ValorNumerodegolpes[i])*parseFloat(ValorPenetracionacumulada[i]))+parseFloat(MultiGolpespenetracion);
+                        
+                        SumaGolpespenetracion = parseFloat((ValorNumerodegolpes[i]))+parseFloat(SumaGolpespenetracion);
+                        
+                        SumaPentracionacumulada = parseFloat((ValorPenetracionacumulada[i])) + parseFloat(SumaPentracionacumulada);    
+                        
+                        caudradoSumaGolpespenetracion = parseFloat(Math.pow(SumaGolpespenetracion, 2));
+                       
+                        
                             if (!isNaN(PenetracionLecturas)) {
-                                var row = div1.getElementsByTagName("tr")[contadorFilas];
-                                var x = row.insertCell(2);
+                                
+                                contadorFilas = contadorFilas+1;
+                                row[contadorFilas].innerHTML = row[contadorFilas].innerHTML + `<td>${ PenetracionLecturas }</td>`;
+                                
+                                  
+                            };                                                     
+                                UltimoPendienteTotal =((Numerodearchivos*MultiGolpespenetracion)-(SumaGolpespenetracion*SumaPentracionacumulada))/((Numerodearchivos*Numerodegolpescuadrado)-(caudradoSumaGolpespenetracion));
+                                
+                                       
+           
+                                //metodo regresion lineal con framework           
+                                const xml = [0.5, 1, 1.5, 2, 2.5];
+                                const yml = [0, 1, 2, 3, 4];
+                                
+                                const regression = new ML.SimpleLinearRegression(xLineal, yLineal);
+                                
+                                            
+                    };
+                   
 
-                                x.setAttribute('class',3);
+                    
+                    row[ultimoFila].innerHTML = row[ultimoFila].innerHTML + `<td>${ UltimoPendienteTotal }</td>`;
+                    
+                   
 
-
-                                var nColumnas = document.getElementsByClassName(3).length;
-                                    x.innerHTML += PenetracionLecturas;
-                                    contador = contador+1;
-                                    contadorFilas = contadorFilas+1
-              
-                                //alert(" Contador "+ contador+ " numero columnas id 3 "+nColumnas);
-
-                            }
-                    }
+                Numerodegolpescuadrado =0;
+                MultiGolpespenetracion =0;
+                SumaGolpespenetracion =0;
+                SumaPentracionacumulada =0;
+                caudradoSumaGolpespenetracion =0;  
+                                      
+                    
             });
 
         };
